@@ -9,7 +9,7 @@ const User = require('../../models/User');
 const router = express.Router();
 
 router.get('/', auth, async (req, res) => { 
-    const userId = req.user;
+    const userId = req.user.id;
     const user = await User.findById(userId).select('-password');
     console.log(user);
     res.send(user);
