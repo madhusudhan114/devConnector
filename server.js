@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 connectDatabase();
 
+app.use(express.json({extended: false}));
+
 app.get('/', (req, res) => {
     res.send('Hello DevConnector');
 });

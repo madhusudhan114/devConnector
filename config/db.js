@@ -5,7 +5,7 @@ const url = config.get('mogoURI');
 
 const connectDatabase = async () => {
     try {
-        await mogoose.connect(url, { useNewUrlParser: true });
+        await mogoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('mongo connecte successfully...');
     } catch (e) {
         console.error(e.message);

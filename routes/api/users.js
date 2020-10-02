@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
 
-// @route - GET
-// @desc - get users
-// @access - Public
+const { body, validationResult } = require('express-validator');
 
-router.get('/', (req, res) => { res.send('Acknowledge Users Route') }) ;
+// @route - POST
+// @desc - register user
+// @access - Public
+router.post('/', [
+    body('name').not().isEmpty(),
+    body('email').isEmail(),
+    body('password').isLength({ min: 5 })
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    } else {
+        res.send('All good')
+    }
+});
 
 module.exports = router;
