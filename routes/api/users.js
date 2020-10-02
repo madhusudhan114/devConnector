@@ -41,11 +41,16 @@ router.post('/', [
             const hash = await bcrypt.hashSync(password, salt);
             user.password = hash;
 
-            const userId = await user.save();
-            console.log('UserId is ', userId);
+            await user.save();
+            console.log('user object ', user);
 
             // generate jwt
-            jwt.sign(password, config.get('jwtSecret'), (err, jwtToken) => {
+            const jwtPayload = {
+                user: {
+                    id: user.id
+                }
+            }
+            jwt.sign(jwtPayload, config.get('jwtSecret'), { expiresIn: 60 * 600 }, (err, jwtToken) => {
                 if (err) {
                     throw err;
                 } else {
