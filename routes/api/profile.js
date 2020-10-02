@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/me', auth, async (req, res) => {
     try {
         const userId = req.user.id;
-        const profie = await Profile.findOne({ user: userId });
+        const profie = await Profile.findOne({ user: userId }).populate('user', ['name', 'avatar', 'email']);
         console.log(`profile is ${profie}`);
         if (profie) {
             return res.send(profie);
@@ -89,5 +89,18 @@ router.post('/', [auth, validationForProfile], async (req, res) => {
     }
 });
 
+
+// @route - GET 
+// @desc - 
+// @access - Public
+router.get('/', async (req, res) => {
+    try {
+        const profiles = await Profile.find().populate('user', ['name', 'avatar', 'email']);
+        res.send(profiles);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;
