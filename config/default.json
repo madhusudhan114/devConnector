@@ -1,4 +1,6 @@
 {
     "mogoURI": "mongodb+srv://madhu:madhu123@cluster0.kgcfl.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "jwtSecret": "myscretkey"
+    "jwtSecret": "myscretkey",
+    "githubClientId": "Iv1.47e63d09b8f5016a",
+    "githubClientSecretKey": "7213ff484e9c1b2d2b5dfc90c36069fdb27f53f1"
 }

@@ -1,6 +1,8 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const normalize = require('normalize-url');
+const config = require('config');
+const request = require('request');
 
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
@@ -266,5 +268,30 @@ router.delete('/education/:eduId', auth, async (req, res) => {
     }
 });
 
+// @route - GET /api/profile/github/:username
+// @desc
+// access - Public
+router.get('/github/:username', (req, res) => {
+    try {
+        const options = {
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=${config.get('githubClientSecretKey')}`,
+            method: 'GET',
+            headers: { 'user-agent': 'node.js'}
+        };
+
+        request(options, (err, result) => {
+            if (err) {
+                console.error('error occured while fetching the gitub profile', err.message);
+                return res.status(400).send({ msg: 'Bad Request' });
+            } else {
+                console.log(res);
+                return res.json(JSON.parse(result.body));
+            }
+        });
+    } catch (err) {
+        console.error(`Bad request ${err.message}`);
+        res.status(400).send({ msg: 'Bad Request' });
+    }
+});
 
 module.exports = router;
